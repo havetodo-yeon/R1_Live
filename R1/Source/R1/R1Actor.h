@@ -25,12 +25,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
-	UR1Object* Obj1;	// 명시 안함
+protected:
+	//UR1Object* Obj1;	// 명시 안함
+	//UPROPERTY()
+	//UR1Object* Obj2;
 
-	// 메모리 확보를 위해 이것은 멤버변수입니다를 명시
-	// 우리가 일일이 지정해줘야함 언리얼이 얘를 봐주기를(탐색해주기를) 바라는거임
-	// UClass, UFunction 등 마찬가지
-	UPROPERTY()
-	UR1Object* Obj2;
+	UPROPERTY(EditAnywhere)
+	int32 Hp = 100;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 Mp = 50;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Stat)
+	float Speed = 3.5f;
 };
