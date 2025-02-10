@@ -2,6 +2,7 @@
 
 
 #include "R1Actor.h"
+#include "R1Object.h"
 
 // Sets default values
 AR1Actor::AR1Actor()
@@ -15,14 +16,27 @@ AR1Actor::AR1Actor()
 void AR1Actor::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("hello"));
+
+	Obj1 = NewObject<UR1Object>();
+	Obj2 = NewObject<UR1Object>();
 	
+	GEngine->ForceGarbageCollection(true);
 }
 
 // Called every frame
 void AR1Actor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (Obj1 == nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Obj1 Deleted"));
+	}
+	
+	if (Obj2 == nullptr)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Obj1 Deleted"));
+	}
 
 }
 

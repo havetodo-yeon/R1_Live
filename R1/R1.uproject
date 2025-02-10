@@ -9,12 +9,14 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine"
+				"Engine",
+				"CoreUObject"
 			]
 		},
 		{
 			"Name": "R1Editor",
 			"Type": "Editor",
+			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Engine"
 			]
