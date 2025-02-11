@@ -17,8 +17,8 @@ void AR1Actor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Obj1 = NewObject<UR1Object>();
-	Obj2 = NewObject<UR1Object>();
+	//Obj1 = NewObject<UR1Object>();
+	//Obj2 = NewObject<UR1Object>();
 	
 	GEngine->ForceGarbageCollection(true);
 }
@@ -28,15 +28,15 @@ void AR1Actor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (Obj1 == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Obj1 Deleted"));
-	}
-	
-	if (Obj2 == nullptr)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Obj1 Deleted"));
-	}
+	//if (Obj1 == nullptr)
+	//{
+	//	UE_LOG(LogTemp, Log, TEXT("Obj1 Deleted"));
+	//}
+	//
+	//if (Obj2 == nullptr)
+	//{
+	//	UE_LOG(LogTemp, Log, TEXT("Obj1 Deleted"));
+	//}
 
 }
 
