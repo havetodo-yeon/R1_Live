@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "R1Actor.generated.h"
 
+class UR1Object;
+
 UCLASS()
 class R1_API AR1Actor : public AActor
 {
@@ -23,4 +25,17 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+protected:
+	//UR1Object* Obj1;	// 명시 안함
+	//UPROPERTY()
+	//UR1Object* Obj2;
+
+	UPROPERTY(EditAnywhere)
+	int32 Hp = 100;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 Mp = 50;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Stat)
+	float Speed = 3.5f;
 };
