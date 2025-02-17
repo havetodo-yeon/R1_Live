@@ -7,6 +7,7 @@
 #include "R1Actor.generated.h"
 
 class UR1Object;
+class UStaticMeshComponent;
 
 UCLASS()
 class R1_API AR1Actor : public AActor
@@ -26,16 +27,16 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
-	//UR1Object* Obj1;	// 명시 안함
-	//UPROPERTY()
-	//UR1Object* Obj2;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> Body;
 
-	UPROPERTY(EditAnywhere)
-	int32 Hp = 100;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> Wings;
 
-	UPROPERTY(VisibleAnywhere)
-	int32 Mp = 50;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	TObjectPtr<UStaticMeshComponent> Head;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Stat)
-	float Speed = 3.5f;
+	UPROPERTY(EditAnywhere, Category = Battle)
+	TObjectPtr<class AActor> Target;
+
 };
