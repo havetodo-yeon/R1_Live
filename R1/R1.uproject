@@ -12,14 +12,6 @@
 				"Engine",
 				"CoreUObject"
 			]
-		},
-		{
-			"Name": "R1Editor",
-			"Type": "Editor",
-			"LoadingPhase": "Default",
-			"AdditionalDependencies": [
-				"Engine"
-			]
 		}
 	],
 	"Plugins": [
