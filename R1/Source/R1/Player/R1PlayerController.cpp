@@ -45,14 +45,23 @@ void AR1PlayerController::Input_Move(const FInputActionValue& InputValue)
 
 	if (MovementVector.X != 0)
 	{
-		FVector Direction = FVector::ForwardVector * MovementVector.X;
-		GetPawn()->AddActorWorldOffset(Direction * 50.0f);
+		//FVector Direction = FVector::ForwardVector * MovementVector.X;
+		//GetPawn()->AddActorWorldOffset(Direction * 50.0f);	// *DeltaTime
+
+		FRotator Rotator = GetControlRotation();	// 방향에 따라 이동
+		FVector Direction = UKismetMathLibrary::GetForwardVector(FRotator(0, Rotator.Yaw, 0));
+		GetPawn()->AddMovementInput(Direction, MovementVector.X);
 	}
 
 	if (MovementVector.Y != 0)
 	{
-		FVector Direction = FVector::RightVector * MovementVector.Y;
-		GetPawn()->AddActorWorldOffset(Direction * 50.0f);
+		//FVector Direction = FVector::RightVector * MovementVector.Y;
+		//GetPawn()->AddActorWorldOffset(Direction * 50.0f);	// *DeltaTime
+
+		FRotator Rotator = GetControlRotation();	// 방향에 따라 이동
+		FVector Direction = UKismetMathLibrary::GetForwardVector(FRotator(0, Rotator.Yaw, 0));
+		GetPawn()->AddMovementInput(Direction, MovementVector.Y);
+
 	}
 
 }
