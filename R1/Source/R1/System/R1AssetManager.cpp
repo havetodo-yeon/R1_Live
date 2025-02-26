@@ -136,7 +136,7 @@ void UR1AssetManager::LoadAsyncByPath(const FSoftObjectPath& AssetPath, FAsyncLo
 			AssetPaths.Add(AssetPath);
 
 			TSharedPtr<FStreamableHandle> Handle = GetStreamableManager().RequestAsyncLoad(AssetPaths);
-
+			// 완료가 되면 호출이 되는 delegate 연결
 			Handle->BindCompleteDelegate(FStreamableDelegate::CreateLambda([AssetName = AssetPath.GetAssetFName(), AssetPath, CompleteDelegate = MoveTemp(CompletedDelegate)]()
 				{
 					UObject* LoadedAsset = AssetPath.ResolveObject();

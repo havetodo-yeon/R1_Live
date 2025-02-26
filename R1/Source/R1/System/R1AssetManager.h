@@ -39,6 +39,7 @@ public:
 	// 비동기로딩: 일단 요청해놓고 빠져나와서 다른 일 진행하다가 
 	// 나중에 완료가 되었다는 통지를 받으면 그거를 가지고 처리하는 방식.
 	// 조금 더 유연하게 만들 수 있지만, 코드가 그만큼 복잡해진다.
+	// FAsyncLoadCompletedDelegate 자료형 사용하여 CompletedDelegate 어떤 함수의 포인터를 받아주는 개념
 	static void LoadAsyncByPath(const FSoftObjectPath& AssetPath, FAsyncLoadCompletedDelegate CompletedDelegate = FAsyncLoadCompletedDelegate());
 	static void LoadAsyncByName(const FName& AssetName, FAsyncLoadCompletedDelegate CompletedDelegate = FAsyncLoadCompletedDelegate());
 
