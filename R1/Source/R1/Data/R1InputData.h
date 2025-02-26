@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameplayTagContainer.h"
+#include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "R1InputData.generated.h"
 
@@ -17,7 +18,7 @@ public:
 	FGameplayTag InputTag = FGameplayTag::EmptyTag;
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UInputAction> InputAcion = nullptr;
+	TObjectPtr<UInputAction> InputAction = nullptr;
 
 };
 
@@ -28,6 +29,9 @@ UCLASS()
 class R1_API UR1InputData : public UDataAsset
 {
 	GENERATED_BODY()
+
+public:
+	const UInputAction* FindInputActionByTag(const FGameplayTag& InputTag) const;
 
 public:
 	UPROPERTY(EditDefaultsOnly)
