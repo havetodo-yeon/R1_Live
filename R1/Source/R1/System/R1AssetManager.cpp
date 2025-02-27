@@ -3,7 +3,7 @@
 
 UR1AssetManager::UR1AssetManager() : Super()
 {
-
+	
 }
 
 UR1AssetManager& UR1AssetManager::Get()
@@ -25,9 +25,9 @@ void UR1AssetManager::Initialize()
 
 void UR1AssetManager::LoadSyncByPath(const FSoftObjectPath& AssetPath)
 {
-	if (AssetPath.IsValid())	// 경로 확인
+	if (AssetPath.IsValid())
 	{
-		UObject* LoadedAsset = AssetPath.ResolveObject();	// 경로에 있는 걸 이미 로딩한 적 있는지 확인하는 함수
+		UObject* LoadedAsset = AssetPath.ResolveObject();
 		if (LoadedAsset == nullptr)
 		{
 			if (UAssetManager::IsInitialized())
@@ -42,7 +42,7 @@ void UR1AssetManager::LoadSyncByPath(const FSoftObjectPath& AssetPath)
 
 		if (LoadedAsset)
 		{
-			Get().AddLoadedAsset(AssetPath.GetAssetFName(), LoadedAsset);	// 로드가 되면 메모리에 추가(등록)
+			Get().AddLoadedAsset(AssetPath.GetAssetFName(), LoadedAsset);
 		}
 		else
 		{
@@ -57,7 +57,7 @@ void UR1AssetManager::LoadSyncByName(const FName& AssetName)
 	check(AssetData);
 
 	const FSoftObjectPath& AssetPath = AssetData->GetAssetPathByName(AssetName);
-	LoadSyncByPath(AssetPath);	// 이름으로 경로를 찾기
+	LoadSyncByPath(AssetPath);
 }
 
 void UR1AssetManager::AddLoadedAsset(const FName& AssetName, const UObject* Asset)
@@ -67,7 +67,7 @@ void UR1AssetManager::AddLoadedAsset(const FName& AssetName, const UObject* Asse
 		//FScopeLock LoadedAssetsLock(&LoadedAssetsCritical);
 
 		if (NameToLoadedAsset.Contains(AssetName) == false)
-		{	// 로드한 걸 캐싱
+		{
 			NameToLoadedAsset.Add(AssetName, Asset);
 		}
 	}
@@ -98,7 +98,7 @@ void UR1AssetManager::LoadSyncByLabel(const FName& Label)
 	}
 
 	GetStreamableManager().RequestSyncLoad(AssetPaths);
-	// 로드 후에 추가
+
 	for (const FAssetEntry& AssetEntry : AssetSet.AssetEntries)
 	{
 		const FSoftObjectPath& AssetPath = AssetEntry.AssetPath;
@@ -136,7 +136,7 @@ void UR1AssetManager::LoadAsyncByPath(const FSoftObjectPath& AssetPath, FAsyncLo
 			AssetPaths.Add(AssetPath);
 
 			TSharedPtr<FStreamableHandle> Handle = GetStreamableManager().RequestAsyncLoad(AssetPaths);
-			// 완료가 되면 호출이 되는 delegate 연결
+
 			Handle->BindCompleteDelegate(FStreamableDelegate::CreateLambda([AssetName = AssetPath.GetAssetFName(), AssetPath, CompleteDelegate = MoveTemp(CompletedDelegate)]()
 				{
 					UObject* LoadedAsset = AssetPath.ResolveObject();
@@ -225,7 +225,7 @@ void UR1AssetManager::LoadPreloadAssets()
 	if (AssetData)
 	{
 		LoadedAssetData = AssetData;
-		LoadSyncByLabel("Preload");	// Preload 라벨 달린 거 다 긁어오기
+		LoadSyncByLabel("Preload");
 	}
 	else
 	{

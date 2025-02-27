@@ -3,7 +3,6 @@
 
 UR1GameInstance::UR1GameInstance(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
-	// 가상함수 override 할 때 꼭 super 해주기
 {
 
 }

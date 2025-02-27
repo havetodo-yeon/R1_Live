@@ -18,17 +18,16 @@ AR1Pawn::AR1Pawn()
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 	Mesh->SetupAttachment(CapsuleComponent);
-	Mesh->SetRelativeLocationAndRotation(FVector(0, 0, -88.000000), FRotator(0, -90, 0));
+	Mesh->SetRelativeLocationAndRotation(FVector(0, 0, -88), FRotator(0, -90, 0));
 	//
 
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
 	SpringArm->SetupAttachment(CapsuleComponent);
+	SpringArm->TargetArmLength = 700.f;
 
-	SpringArm->TargetArmLength = 700.0f;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
-
 
 }
 

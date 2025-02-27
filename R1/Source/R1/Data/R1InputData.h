@@ -1,3 +1,5 @@
+
+
 #pragma once
 
 #include "GameplayTagContainer.h"
@@ -19,7 +21,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UInputAction> InputAction = nullptr;
-
 };
 
 /**
@@ -39,5 +40,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FR1InputAction> InputActions;
-	//TArray<TObjectPtr<UInputAction>> InputActions;
+
+	/*UPROPERTY(EditDefaultsOnly)
+	TArray<TObjectPtr<UInputAction>> TestInputActions;*/
 };

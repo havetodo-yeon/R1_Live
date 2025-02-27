@@ -4,7 +4,7 @@
 const UInputAction* UR1InputData::FindInputActionByTag(const FGameplayTag& InputTag) const
 {
 	for (const FR1InputAction& Action : InputActions)
-	{	// 원하는 태그가 있는지 찾기
+	{
 		if (Action.InputAction && Action.InputTag == InputTag)
 		{
 			return Action.InputAction;

@@ -2,14 +2,13 @@
 
 
 #include "Data/R1AssetData.h"
-
 #include "UObject/ObjectSaveContext.h"
 
 void UR1AssetData::PreSave(FObjectPreSaveContext ObjectSaveContext)
-{	// PDA 저장하는 순간 호출
+{
 	Super::PreSave(ObjectSaveContext);
 
-	AssetNameToPath.Empty();	// clear 비우는 함수
+	AssetNameToPath.Empty();
 	AssetLabelToSet.Empty();
 
 	AssetGroupNameToSet.KeySort([](const FName& A, const FName& B)
@@ -33,7 +32,7 @@ void UR1AssetData::PreSave(FObjectPreSaveContext ObjectSaveContext)
 			}*/
 
 			AssetNameToPath.Emplace(AssetEntry.AssetName, AssetEntry.AssetPath);
-			for (const FName& Label : AssetEntry.AssetLabels)	// 라벨 찾아서 빠르게 탐색할 수 있음
+			for (const FName& Label : AssetEntry.AssetLabels)
 			{
 				AssetLabelToSet.FindOrAdd(Label).AssetEntries.Emplace(AssetEntry);
 			}
@@ -41,18 +40,16 @@ void UR1AssetData::PreSave(FObjectPreSaveContext ObjectSaveContext)
 	}
 }
 
-
-// 캐싱된 거 긁어오기
 FSoftObjectPath UR1AssetData::GetAssetPathByName(const FName& AssetName)
 {
 	FSoftObjectPath* AssetPath = AssetNameToPath.Find(AssetName);
-	ensureAlwaysMsgf(AssetPath, TEXT("Can't find Asset Path from Asset Name[%s]."), *AssetName.ToString());
+	ensureAlwaysMsgf(AssetPath, TEXT("Can't find Asset Path from Asset Name [%s]."), *AssetName.ToString());
 	return *AssetPath;
 }
 
 const FAssetSet& UR1AssetData::GetAssetSetByLabel(const FName& Label)
 {
 	const FAssetSet* AssetSet = AssetLabelToSet.Find(Label);
-	ensureAlwaysMsgf(AssetSet, TEXT("Can't find Asset Path from Asset Name[%s]."), *Label.ToString());
+	ensureAlwaysMsgf(AssetSet, TEXT("Can't find Asset Set from Label [%s]."), *Label.ToString());
 	return *AssetSet;
 }
