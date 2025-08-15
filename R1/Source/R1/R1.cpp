@@ -9,8 +9,15 @@ class FR1Module : public FDefaultGameModuleImpl
 {
 	virtual void StartupModule() override
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Hello World@@@!!!!!"));
-		UE_LOG(LogR1, Warning, TEXT("Hello World@@@!!!!!"));
+		//UE_LOG(LogTemp, Log, TEXT("Hello World"));
+		UE_LOG(LogR1, Log, TEXT("Hello World"));
+
+
+	}
+
+	virtual void ShutdownModule() override
+	{
+
 	}
 };
 
