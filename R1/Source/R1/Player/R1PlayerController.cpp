@@ -8,6 +8,7 @@
 #include "System/R1AssetManager.h"
 #include "Data/R1InputData.h"
 #include "R1GameplayTags.h"
+#include "Character/R1Player.h"
 
 AR1PlayerController::AR1PlayerController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -42,8 +43,12 @@ void AR1PlayerController::SetupInputComponent()
 		auto Action2 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Turn);
 		EnhancedInputComponent->BindAction(Action2, ETriggerEvent::Triggered, this, &ThisClass::Input_Turn);
 
-		//EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
-		//EnhancedInputComponent->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ThisClass::Input_Turn);
+		auto Action3 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Jump);
+		EnhancedInputComponent->BindAction(Action3, ETriggerEvent::Triggered, this, &ThisClass::Input_Jump);
+
+		auto Action4 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Attack);
+		EnhancedInputComponent->BindAction(Action4, ETriggerEvent::Triggered, this, &ThisClass::Input_Attack);
+
 	}
 }
 
@@ -76,4 +81,17 @@ void AR1PlayerController::Input_Turn(const FInputActionValue& InputValue)
 {
 	float Val = InputValue.Get<float>();
 	AddYawInput(Val);
+}
+
+void AR1PlayerController::Input_Jump(const FInputActionValue& InputValue)
+{
+	if (AR1Character* MyPlayer = Cast<AR1Character>(GetPawn())) 
+	{
+		MyPlayer->Jump();
+	}
+}
+
+void AR1PlayerController::Input_Attack(const FInputActionValue& InputValue)
+{
+	UE_LOG(LogTemp, Log, TEXT("Attack!!"));
 }

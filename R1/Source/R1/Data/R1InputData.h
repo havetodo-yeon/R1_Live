@@ -32,6 +32,7 @@ class R1_API UR1InputData : public UDataAsset
 	GENERATED_BODY()
 
 public:
+	// 태그에 해당하는 인풋 액션 실행
 	const UInputAction* FindInputActionByTag(const FGameplayTag& InputTag) const;
 
 public:
