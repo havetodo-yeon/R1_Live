@@ -1,6 +1,3 @@
-
-
-
 #include "Player/R1PlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -9,11 +6,18 @@
 #include "Data/R1InputData.h"
 #include "R1GameplayTags.h"
 #include "Character/R1Player.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
+
 
 AR1PlayerController::AR1PlayerController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-
+	bShowMouseCursor = true;
+	DefaultMouseCursor = EMouseCursor::Default;
+	CachedDestination = FVector::ZeroVector;
+	FollowTime = 0.f;
 }
 
 void AR1PlayerController::BeginPlay()
@@ -37,66 +41,57 @@ void AR1PlayerController::SetupInputComponent()
 	{
 		UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
-		auto Action1 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Move);
-		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
+		auto Action1 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_SetDestination);
 
-		auto Action2 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Turn);
-		EnhancedInputComponent->BindAction(Action2, ETriggerEvent::Triggered, this, &ThisClass::Input_Turn);
-
-		auto Action3 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Jump);
-		EnhancedInputComponent->BindAction(Action3, ETriggerEvent::Triggered, this, &ThisClass::Input_Jump);
-
-		auto Action4 = InputData->FindInputActionByTag(R1GameplayTags::Input_Action_Attack);
-		EnhancedInputComponent->BindAction(Action4, ETriggerEvent::Triggered, this, &ThisClass::Input_Attack);
-
+		// Setup mouse input events
+		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Started, this, &ThisClass::OnInputStarted);
+		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Triggered, this, &ThisClass::OnSetDestinationTriggered);
+		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Completed, this, &ThisClass::OnSetDestinationReleased);
+		EnhancedInputComponent->BindAction(Action1, ETriggerEvent::Canceled, this, &ThisClass::OnSetDestinationReleased);
 	}
 }
 
-void AR1PlayerController::Input_Move(const FInputActionValue& InputValue)
+void AR1PlayerController::OnInputStarted()
 {
-	FVector2D MovementVector = InputValue.Get<FVector2D>();
-
-	if (MovementVector.X != 0)
-	{
-		//FVector Direction = FVector::ForwardVector * MovementVector.X;
-		//GetPawn()->AddActorWorldOffset(Direction * 50.f); // * DeltaTime
-
-		FRotator Rotator = GetControlRotation();
-		FVector Direction = UKismetMathLibrary::GetForwardVector(FRotator(0, Rotator.Yaw, 0));
-		GetPawn()->AddMovementInput(Direction, MovementVector.X);
-	}
-
-	if (MovementVector.Y != 0)
-	{
-		//FVector Direction = FVector::RightVector * MovementVector.Y;
-		//GetPawn()->AddActorWorldOffset(Direction * 50.f); // * DeltaTime
-
-		FRotator Rotator = GetControlRotation();
-		FVector Direction = UKismetMathLibrary::GetRightVector(FRotator(0, Rotator.Yaw, 0));
-		GetPawn()->AddMovementInput(Direction, MovementVector.Y);
-	}
+	StopMovement();
 }
 
-void AR1PlayerController::Input_Turn(const FInputActionValue& InputValue)
+// Triggered every frame when the input is held down
+void AR1PlayerController::OnSetDestinationTriggered()
 {
-	float Val = InputValue.Get<float>();
-	AddYawInput(Val);
+	// We flag that the input is being pressed
+	FollowTime += GetWorld()->GetDeltaSeconds();
+
+	// We look for the location in the world where the player has pressed the input
+	FHitResult Hit;
+	bool bHitSuccessful = GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Hit);
+
+	// If we hit a surface, cache the location
+	if (bHitSuccessful)
+	{
+		CachedDestination = Hit.Location;
+	}
+
+	// Move towards mouse pointer or touch
+	APawn* ControlledPawn = GetPawn();
+	if (ControlledPawn != nullptr)
+	{
+		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
+	}
+
 }
 
-void AR1PlayerController::Input_Jump(const FInputActionValue& InputValue)
+void AR1PlayerController::OnSetDestinationReleased()
 {
-	if (AR1Character* MyPlayer = Cast<AR1Character>(GetPawn())) 
+	// If it was a short press
+	if (FollowTime <= ShortPressThreshold)
 	{
-		MyPlayer->Jump();
+		// We move there and spawn some particles
+		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, CachedDestination, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
 	}
-}
 
-void AR1PlayerController::Input_Attack(const FInputActionValue& InputValue)
-{
-	UE_LOG(LogTemp, Log, TEXT("Attack!!"));
+	FollowTime = 0.f;
 
-	if (AttackMontage) 
-	{
-		Cast<AR1Character>(GetPawn())->PlayAnimMontage(AttackMontage);
-	}
 }
