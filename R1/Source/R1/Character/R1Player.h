@@ -4,10 +4,6 @@
 #include "Character/R1Character.h"
 #include "R1Player.generated.h"
 
-/** Delegate Practice **/
-//DECLARE_DELEGATE(FDobeDelegate);
-//DECLARE_MULTICAST_DELEGATE(FDobeMulticastDelegate);
-
 /**
  * 
  */
@@ -39,10 +35,4 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class UCameraComponent> Camera;
 
-/** Delegate Practice **/
-//public:
-//	UFUNCTION()
-//	void TestFunc() { }
-//	FDobeDelegate DobeDelegate;
-//	FDobeMulticastDelegate DobeMulticastDelegate;
 };

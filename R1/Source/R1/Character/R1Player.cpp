@@ -39,15 +39,6 @@ void AR1Player::BeginPlay()
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
 
-	/** delegate practice **/
-	//dobedelegate.binduobject(this, &thisclass::testfunc);	// +=
-	//dobedelegate.execute();	// invoke
-	//dobedelegate.unbind();	// -=
-
-	//dobemulticastdelegate.adduobject(this, &thisclass::testfunc);
-	//dobemulticastdelegate.broadcast();
-	//dobemulticastdelegate.removeall();
-
 }
 
 void AR1Player::Tick(float DeltaTime)

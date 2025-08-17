@@ -28,3 +28,13 @@ void AR1Character::Tick(float DeltaTime)
 
 }
 
+void AR1Character::Highlight()
+{
+	bHighlighted = true;
+}
+
+void AR1Character::UnHighlight()
+{
+	bHighlighted = false;
+}
+
