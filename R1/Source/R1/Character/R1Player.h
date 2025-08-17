@@ -1,10 +1,12 @@
-
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Character/R1Character.h"
 #include "R1Player.generated.h"
+
+/** Delegate Practice **/
+//DECLARE_DELEGATE(FDobeDelegate);
+//DECLARE_MULTICAST_DELEGATE(FDobeMulticastDelegate);
 
 /**
  * 
@@ -26,10 +28,21 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class USpringArmComponent> SpringArm;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class UCameraComponent> Camera;
+
+/** Delegate Practice **/
+//public:
+//	UFUNCTION()
+//	void TestFunc() { }
+//	FDobeDelegate DobeDelegate;
+//	FDobeMulticastDelegate DobeMulticastDelegate;
 };

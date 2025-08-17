@@ -28,16 +28,36 @@ AR1Player::AR1Player()
 
 	GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -88.f), FRotator(0.f, -90.f, 0.f));
 
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	//GetCapsuleComponent()->SetCollisionResponseToChannels(ECC_Pawn, ECC_Ignore);
+
 }
 
 void AR1Player::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnBeginOverlap);
+
+	/** delegate practice **/
+	//dobedelegate.binduobject(this, &thisclass::testfunc);	// +=
+	//dobedelegate.execute();	// invoke
+	//dobedelegate.unbind();	// -=
+
+	//dobemulticastdelegate.adduobject(this, &thisclass::testfunc);
+	//dobemulticastdelegate.broadcast();
+	//dobemulticastdelegate.removeall();
+
 }
 
 void AR1Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+}
+
+void AR1Player::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Log, TEXT("OnBeginOverlap"));
 
 }
