@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "R1Define.h"
+#include "GameplayTagContainer.h"
 #include "R1PlayerController.generated.h"
 
 struct FInputActionValue;
@@ -25,6 +26,9 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	virtual void PlayerTick(float DeltaTime) override;
+
+public:
+	virtual void HandleGameplayEvent(FGameplayTag EventTag);
 
 private:
 	void TickCursorTrace();

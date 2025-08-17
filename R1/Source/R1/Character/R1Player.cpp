@@ -3,6 +3,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Player/R1PlayerController.h"
 
 AR1Player::AR1Player()
 {	
@@ -45,6 +46,16 @@ void AR1Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AR1Player::HandleGameplayEvent(FGameplayTag EventTag)
+{
+	// TODO: PlayerController에 있는 상태나 HP 등의 수치가 Player쪽에 있는 것이 장기적으로는 더 좋음
+	AR1PlayerController* PC = Cast<AR1PlayerController>(GetController());
+	if (PC) 
+	{
+		PC->HandleGameplayEvent(EventTag);
+	}
 }
 
 void AR1Player::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
