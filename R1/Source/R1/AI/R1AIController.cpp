@@ -14,23 +14,23 @@ void AR1AIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FVector Dest = { 0, 0, 0 };
-	FAIMoveRequest MoveRequest;
-	MoveRequest.SetGoalLocation(Dest);
-	MoveRequest.SetAcceptanceRadius(15.f);
+	//FVector Dest = { 0, 0, 0 };
+	//FAIMoveRequest MoveRequest;
+	//MoveRequest.SetGoalLocation(Dest);
+	//MoveRequest.SetAcceptanceRadius(15.f);
 
-	FNavPathSharedPtr NavPath;
-	MoveTo(MoveRequest, OUT &NavPath);
+	//FNavPathSharedPtr NavPath;
+	//MoveTo(MoveRequest, OUT &NavPath);
 
-	if (NavPath.IsValid())
-	{
-		TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();
-		for (const auto& Point : PathPoints)
-		{
-			const FVector& Location = Point.Location;
-			DrawDebugSphere(GetWorld(), Location, 12.f, 12, FColor::Green, false, 10.f);
-		}
-	}
+	//if (NavPath.IsValid())
+	//{
+	//	TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();
+	//	for (const auto& Point : PathPoints)
+	//	{
+	//		const FVector& Location = Point.Location;
+	//		DrawDebugSphere(GetWorld(), Location, 12.f, 12, FColor::Green, false, 10.f);
+	//	}
+	//}
 }
 
 void AR1AIController::Tick(float DeltaTime)
