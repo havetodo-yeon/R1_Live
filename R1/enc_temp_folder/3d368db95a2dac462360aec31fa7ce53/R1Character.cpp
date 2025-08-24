@@ -33,8 +33,7 @@ AR1Character::AR1Character()
 void AR1Character::BeginPlay()
 {
 	Super::BeginPlay();
-	RefreshHpBarRatio();
-
+	
 }
 
 // Called every frame
