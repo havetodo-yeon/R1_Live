@@ -9,13 +9,17 @@
 class UR1InventorySlotWidget;
 class UUniformGridPanel;
 
+class UR1InventoryEntryWidget;
+class UR1ItemInstance;
+class UCanvasPanel;
+
 /**
  *
  */
 UCLASS()
 class R1_API UR1InventorySlotsWidget : public UR1UserWidget
 {
-	GENERATED_BODY()
+	GENERATED_BODY()	// 옮기려는 자리에 아이템이 있을 경우 기존 아이템을 지우고 덮어쓰기
 
 
 public:
@@ -23,6 +27,8 @@ public:
 
 protected:
 	virtual void NativeConstruct() override;
+
+	void OnInventoryEntryChanged(const FIntPoint& ItemSlotPos, TObjectPtr<UR1ItemInstance> Item);	// 배열에서 아이템 위치 변경 시: 삭제 후 새로운 자리에 추가
 
 protected:
 	UPROPERTY()
@@ -32,6 +38,21 @@ protected:
 	UPROPERTY()
 	TArray<TObjectPtr<UR1InventorySlotWidget>> SlotWidgets;
 
+	UPROPERTY()
+	TSubclassOf<UR1InventoryEntryWidget> EntryWidgetClass;	// 동적 생성 
+
+	UPROPERTY()
+	TArray<TObjectPtr<UR1InventoryEntryWidget>> EntryWidgets;
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UUniformGridPanel> GridPanel_Slots;
+
+private:
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UCanvasPanel> CanvasPanel_Entries;
+
+private:
+	FIntPoint PrevDragOverSlotPos = FIntPoint(-1, -1);
+	const int X_COUNT = 10;
+	const int Y_COUNT = 5;
 };
