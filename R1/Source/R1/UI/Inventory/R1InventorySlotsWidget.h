@@ -30,6 +30,14 @@ protected:
 
 	void OnInventoryEntryChanged(const FIntPoint& ItemSlotPos, TObjectPtr<UR1ItemInstance> Item);	// 배열에서 아이템 위치 변경 시: 삭제 후 새로운 자리에 추가
 
+	// Item Drag 관련
+	virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+	virtual void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+private:
+	void FinishDrag();
+
 protected:
 	UPROPERTY()
 	TSubclassOf<UR1InventorySlotWidget> SlotWidgetClass;

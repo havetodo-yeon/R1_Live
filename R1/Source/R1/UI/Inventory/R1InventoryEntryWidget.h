@@ -33,6 +33,11 @@ protected:
 	virtual void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
+	virtual void NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
+	void RefreshWidgetOpacity(bool bClearlyVisible);	// Visibility 따라서 Opacity 조절하는 부분
+	void RefreshItemCount(int32 NewItemCount);	// ItemCount 따라서 세팅하는 부분
 
 private:
 	FIntPoint CachedFromSlotPos = FIntPoint::ZeroValue;	// int를 두 개로 묶어서 사용하는 개념
@@ -46,8 +51,8 @@ protected:
 	UPROPERTY()
 	TObjectPtr<UR1ItemInstance> ItemInstance;	// 아이템에 대한 정보
 
-	//UPROPERTY()
-	//TSubclassOf<UR1ItemDragWidget> DragWidgetClass;
+	UPROPERTY()
+	TSubclassOf<UR1ItemDragWidget> DragWidgetClass;	// 드래그 할 때 어떤 위젯으로 보여주고 싶은 지 연결
 
 protected:
 	UPROPERTY(meta = (BindWidget))

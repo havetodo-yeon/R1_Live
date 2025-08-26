@@ -9,6 +9,7 @@
 #include "Subsystems/SubsystemBlueprintLibrary.h"
 #include "Item/R1InventorySubsystem.h"
 #include "UI/Inventory/R1InventoryEntryWidget.h"
+#include "UI/Item/Drag/R1DragDropOperation.h"
 #include "R1Define.h"
 
 UR1InventorySlotsWidget::UR1InventorySlotsWidget(const FObjectInitializer& ObjectInitializer)
@@ -86,4 +87,60 @@ void UR1InventorySlotsWidget::OnInventoryEntryChanged(const FIntPoint& InItemSlo
 		// TODO
 		EntryWidget->Init(this, Item, 1);
 	}
+}
+
+// 마우스 클릭 놓았을 경우 UR1DragDropOperation 캐스팅해서 해당 위치에 삽입
+bool UR1InventorySlotsWidget::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
+
+	UR1DragDropOperation* DragDrop = Cast<UR1DragDropOperation>(InOperation);
+	check(DragDrop);
+
+	FVector2D MouseWidgetPos = InGeometry.AbsoluteToLocal(InDragDropEvent.GetScreenSpacePosition());
+	FVector2D ToWidgetPos = MouseWidgetPos - DragDrop->DeltaWidgetPos;
+	FIntPoint ToSlotPos = FIntPoint(ToWidgetPos.X / Item::UnitInventorySlotSize.X, ToWidgetPos.Y / Item::UnitInventorySlotSize.Y);
+
+	if (PrevDragOverSlotPos == ToSlotPos)	// 같은 위치면 스킵
+		return true;
+
+	PrevDragOverSlotPos = ToSlotPos;
+
+	// TODO
+
+	return false;
+}
+
+void UR1InventorySlotsWidget::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDragLeave(InDragDropEvent, InOperation);
+	FinishDrag();
+}
+
+// 아이템 마우스 클릭 후 드래그하여 알맞은 위치에 놓았을 경우
+bool UR1InventorySlotsWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+	FinishDrag();
+
+	UR1DragDropOperation* DragDrop = Cast<UR1DragDropOperation>(InOperation);
+	check(DragDrop);
+
+	FVector2D MouseWidgetPos = InGeometry.AbsoluteToLocal(InDragDropEvent.GetScreenSpacePosition());
+	FVector2D ToWidgetPos = MouseWidgetPos - DragDrop->DeltaWidgetPos;
+	FIntPoint ToItemSlotPos = FIntPoint(ToWidgetPos.X / Item::UnitInventorySlotSize.X, ToWidgetPos.Y / Item::UnitInventorySlotSize.Y);
+
+	// TODO
+	if (DragDrop->FromItemSlotPos != ToItemSlotPos)
+	{
+		OnInventoryEntryChanged(DragDrop->FromItemSlotPos, nullptr);
+		OnInventoryEntryChanged(ToItemSlotPos, DragDrop->ItemInstance);
+	}
+
+	return false;
+}
+
+void UR1InventorySlotsWidget::FinishDrag()
+{
+	PrevDragOverSlotPos = FIntPoint(-1, -1);	// 리셋
 }
